@@ -1,11 +1,14 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import multer from 'multer';
+import fs from 'fs';
 import { initSchema, closeDriver } from './lib/neo4j.js';
-import { generateResponse } from './lib/openai.js';
+import { generateResponse, transcribeAudio } from './lib/openai.js';
 
 dotenv.config();
 
 const app = express();
+const upload = multer({ storage: multer.memoryStorage() });
 app.use(express.json());
 app.use(express.static('public'));
 
@@ -55,6 +58,24 @@ app.post('/interview/start', async (req, res) => {
     res.json({ question: openingQuestion, storyNumber: 1 });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/interview/whisper', upload.single('audio'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No audio file provided' });
+    }
+
+    // Convert buffer to a temporary file for OpenAI library
+    // Alternatively, use fetch/form-data directly if library has issues with buffers
+    // For Node.js ESM, we can use a Blob or a File object
+    const file = new File([req.file.buffer], 'audio.webm', { type: req.file.mimetype });
+    const text = await transcribeAudio(file);
+    res.json({ text });
+  } catch (error) {
+    console.error('Error in /interview/whisper:', error);
+    res.status(500).json({ error: 'Failed to transcribe audio' });
   }
 });
 

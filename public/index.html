@@ -22,8 +22,11 @@
 
             <div class="controls">
                 <input type="text" id="user-input" placeholder="Tell your story..." autocomplete="off">
-                <button id="send-btn">Send Response</button>
-                <button id="analyze-btn" style="display: none; background: #333;">Analyze Patterns</button>
+                <div style="display: flex; gap: 0.5rem; width: 100%;">
+                    <button id="send-btn" style="flex: 1;">Send Response</button>
+                    <button id="record-btn" style="background: #ff4b4b; flex: 0.3;">🎤</button>
+                </div>
+                <button id="analyze-btn" style="display: none; background: #333; width: 100%;">Analyze Patterns</button>
             </div>
         </div>
     </div>

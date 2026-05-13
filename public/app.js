@@ -7,6 +7,11 @@ const tagContainer = document.getElementById('tag-container');
 const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 const analyzeBtn = document.getElementById('analyze-btn');
+const recordBtn = document.getElementById('record-btn');
+
+let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
 
 async function startInterview() {
     const response = await fetch('/interview/start', { method: 'POST' });
@@ -90,5 +95,45 @@ userInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') sendResponse();
 });
 analyzeBtn.addEventListener('click', analyzePatterns);
+
+async function toggleRecording() {
+    if (!isRecording) {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+
+        mediaRecorder.ondataavailable = (event) => {
+            audioChunks.push(event.data);
+        };
+
+        mediaRecorder.onstop = async () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const formData = new FormData();
+            formData.append('audio', audioBlob);
+
+            questionText.innerText = 'Transcribing your voice...';
+            const response = await fetch('/interview/whisper', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            userInput.value = data.text;
+            sendResponse(); // Automatically send after transcription
+        };
+
+        mediaRecorder.start();
+        isRecording = true;
+        recordBtn.innerText = '⏹';
+        recordBtn.style.background = '#333';
+    } else {
+        mediaRecorder.stop();
+        isRecording = false;
+        recordBtn.innerText = '🎤';
+        recordBtn.style.background = '#ff4b4b';
+    }
+}
+
+recordBtn.addEventListener('click', toggleRecording);
 
 startInterview();
