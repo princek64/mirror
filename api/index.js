@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import multer from 'multer';
+// import multer from 'multer';
 import fs from 'fs';
 // import { initSchema, closeDriver } from './lib/neo4j.js';
 // import { generateResponse, transcribeAudio } from './lib/openai.js';
@@ -8,7 +8,7 @@ import fs from 'fs';
 dotenv.config();
 
 const app = express();
-const upload = multer({ storage: multer.memoryStorage() });
+// const upload = multer({ storage: multer.memoryStorage() });
 app.use(express.json());
 // app.use(express.static('public')); // Handled by Vercel
 
@@ -67,6 +67,7 @@ app.post('/interview/start', async (req, res) => {
   }
 });
 
+/*
 app.post('/interview/whisper', upload.single('audio'), async (req, res) => {
   try {
     if (!req.file) {
@@ -92,6 +93,7 @@ app.post('/interview/whisper', upload.single('audio'), async (req, res) => {
     res.status(500).json({ error: 'Failed to transcribe audio' });
   }
 });
+*/
 
 app.post('/interview/respond', async (req, res) => {
   const { transcript, history, storyNumber } = req.body;
