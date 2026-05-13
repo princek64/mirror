@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirror | Pattern Detective</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+
+    <div id="app">
+        <div class="container">
+            <h1>Mirror</h1>
+            <p class="subtitle">Uncover your relationship patterns.</p>
+            
+            <div id="chat-container" class="chat-box">
+                <div class="message" id="question-text">Initializing mirror...</div>
+                <div class="tag-container" id="tag-container"></div>
+            </div>
+
+            <div class="controls">
+                <input type="text" id="user-input" placeholder="Tell your story..." autocomplete="off">
+                <button id="send-btn">Send Response</button>
+                <button id="analyze-btn" style="display: none; background: #333;">Analyze Patterns</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
