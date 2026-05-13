@@ -73,11 +73,19 @@ app.post('/interview/whisper', upload.single('audio'), async (req, res) => {
       return res.status(400).json({ error: 'No audio file provided' });
     }
 
-    // Convert buffer to a temporary file for OpenAI library
-    // Alternatively, use fetch/form-data directly if library has issues with buffers
-    // For Node.js ESM, we can use a Blob or a File object
-    const file = new File([req.file.buffer], 'audio.webm', { type: req.file.mimetype });
-    const text = await transcribeAudio(file);
+    // Use the buffer directly with a filename property for the OpenAI SDK
+    // This is more compatible than the 'File' object in older Node versions
+    const audioFile = {
+      buffer: req.file.buffer,
+      fieldname: 'audio',
+      originalname: 'audio.webm',
+      encoding: '7bit',
+      mimetype: req.file.mimetype,
+    };
+
+    // The OpenAI SDK can take a 'toFile' helper or just the buffer if we wrap it
+    // But the simplest way is to pass the buffer with the filename in the request
+    const text = await transcribeAudio(req.file.buffer); 
     res.json({ text });
   } catch (error) {
     console.error('Error in /interview/whisper:', error);
