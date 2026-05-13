@@ -4,6 +4,10 @@
     {
       "source": "/interview/(.*)",
       "destination": "/api/index.js"
+    },
+    {
+      "source": "/test",
+      "destination": "/api/test.js"
     }
   ]
 }
