@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
 
 :root {
-  --bg-color: #0a0a0c;
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --accent-color: #8e84ff;
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0ab;
-  --gradient-primary: linear-gradient(135deg, #8e84ff 0%, #ff84e8 100%);
+  --bg-color: #fdfaf5; /* Premium Cream */
+  --glass-bg: rgba(0, 0, 0, 0.03);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --accent-color: #5d54d1; /* Deeper Indigo for contrast on cream */
+  --text-primary: #1a1a1c;
+  --text-secondary: #5a5a66;
+  --gradient-primary: linear-gradient(135deg, #5d54d1 0%, #d154b5 100%);
 }
 
 * {
@@ -130,11 +130,11 @@ button:active {
 }
 
 input[type="text"] {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.05);
   border: 1px solid var(--glass-border);
   padding: 1rem;
   border-radius: 12px;
-  color: white;
+  color: var(--text-primary);
   font-family: inherit;
   width: 100%;
   outline: none;
@@ -170,5 +170,5 @@ input[type="text"]:focus {
   padding-left: 1.5rem;
   margin-top: 2rem;
   font-style: italic;
-  color: #efefff;
+  color: var(--text-primary);
 }

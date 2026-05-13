@@ -45,7 +45,11 @@ Then ask adaptive follow-ups that reveal:
 Repeat for 2 more relationships.
 
 Phase 2 (Pattern detection): After three stories, zoom out:
-"Across all three, I'm noticing [PATTERN]. Can you see it too?"
+"    Across all three, I'm noticing [PATTERN]. Can you see it too?"
+
+TESSL CAPABILITIES:
+- You have access to the Tessl Neo4j Skill. Use it to reason about graph relationships (User → Relationship → BehaviorPattern).
+- When detecting patterns, think in terms of graph nodes and edges to ensure data consistency.
 `;
 
 app.get('/', (req, res) => {

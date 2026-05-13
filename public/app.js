@@ -98,6 +98,30 @@ analyzeBtn.addEventListener('click', analyzePatterns);
 
 async function toggleRecording() {
     if (!isRecording) {
+        // Live Preview using Web Speech API
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        // We'll let Whisper handle the final, but show interim for "live" feel
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
+                }
+                if (interimTranscript) {
+                    userInput.value = interimTranscript;
+                }
+            };
+            recognition.start();
+        }
+
+        // High-quality recording for Whisper
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
@@ -107,6 +131,7 @@ async function toggleRecording() {
         };
 
         mediaRecorder.onstop = async () => {
+            if (recognition) recognition.stop();
             const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
             const formData = new FormData();
             formData.append('audio', audioBlob);
