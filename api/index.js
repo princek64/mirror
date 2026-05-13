@@ -2,15 +2,15 @@ import express from 'express';
 import dotenv from 'dotenv';
 import multer from 'multer';
 import fs from 'fs';
-import { initSchema, closeDriver } from '../lib/neo4j.js';
-import { generateResponse, transcribeAudio } from '../lib/openai.js';
+import { initSchema, closeDriver } from './lib/neo4j.js';
+import { generateResponse, transcribeAudio } from './lib/openai.js';
 
 dotenv.config();
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
 app.use(express.json());
-app.use(express.static('public'));
+// app.use(express.static('public')); // Handled by Vercel
 
 const PORT = process.env.PORT || 3000;
 
@@ -179,8 +179,3 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export default app;
-
-process.on('SIGINT', async () => {
-  await closeDriver();
-  process.exit(0);
-});
