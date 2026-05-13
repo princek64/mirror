@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
 
 :root {
-  --bg-color: #fdfaf5; /* Premium Cream */
+  --bg-color: #f2ebe0; /* Tan/Cream */
   --glass-bg: rgba(0, 0, 0, 0.03);
   --glass-border: rgba(0, 0, 0, 0.1);
   --accent-color: #5d54d1; /* Deeper Indigo for contrast on cream */
