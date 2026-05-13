@@ -136,10 +136,14 @@ app.post('/interview/analyze', async (req, res) => {
 });
 
 // Basic structure for testing
-app.listen(PORT, async () => {
-  console.log(`Server is running on port ${PORT}`);
-  await initSchema();
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, async () => {
+    console.log(`Server is running on port ${PORT}`);
+    await initSchema();
+  });
+}
+
+export default app;
 
 process.on('SIGINT', async () => {
   await closeDriver();
