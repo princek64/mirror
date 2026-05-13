@@ -60,7 +60,7 @@ app.get('/', (req, res) => {
 
 app.post('/interview/start', async (req, res) => {
   try {
-    const openingQuestion = "Mirror, mirror on the wall... reveal the truth beneath it all. \n\nWalk me through the last relationship that ended. Start from when you first met — what was it like?";
+    const openingQuestion = "Walk me through the last relationship that ended. Start from when you first met — what was it like?";
     res.json({ question: openingQuestion, storyNumber: 1 });
   } catch (error) {
     res.status(500).json({ error: error.message });

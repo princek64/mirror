@@ -14,10 +14,28 @@ let audioChunks = [];
 let isRecording = false;
 
 async function startInterview() {
-    const response = await fetch('/interview/start', { method: 'POST' });
-    const data = await response.json();
-    questionText.innerText = data.question;
-    storyNumber = data.storyNumber;
+    // Show loader for at least 3.5 seconds to let animations play
+    const loader = document.getElementById('loader');
+    const app = document.getElementById('app');
+    
+    try {
+        const response = await fetch('/interview/start', { method: 'POST' });
+        const data = await response.json();
+        questionText.innerText = data.question;
+        storyNumber = data.storyNumber;
+        
+        setTimeout(() => {
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                app.style.display = 'block';
+                userInput.focus();
+            }, 1000);
+        }, 3500);
+    } catch (error) {
+        console.error('Failed to start interview:', error);
+        questionText.innerText = "The mirror is foggy. Please refresh.";
+    }
 }
 
 async function sendResponse() {
@@ -27,7 +45,9 @@ async function sendResponse() {
     userInput.value = '';
     userInput.disabled = true;
     sendBtn.disabled = true;
-    questionText.innerText = 'Analyzing your behavior...';
+    const container = document.querySelector('.container');
+    container.classList.add('processing');
+    questionText.innerText = 'Mirroring your thoughts...';
 
     const response = await fetch('/interview/respond', {
         method: 'POST',
@@ -42,6 +62,7 @@ async function sendResponse() {
     history.push({ role: 'assistant', content: data.question });
 
     // Update UI
+    container.classList.remove('processing');
     questionText.innerText = data.question;
     
     // Update Tags
@@ -69,6 +90,8 @@ async function sendResponse() {
 async function analyzePatterns() {
     analyzeBtn.disabled = true;
     questionText.innerText = 'Synthesizing the mirror...';
+    const container = document.querySelector('.container');
+    container.classList.add('processing');
     
     const response = await fetch('/interview/analyze', {
         method: 'POST',
@@ -77,6 +100,7 @@ async function analyzePatterns() {
     });
 
     const data = await response.json();
+    container.classList.remove('processing');
 
     questionText.innerHTML = `
         <div class="mirror-result">
@@ -109,7 +133,7 @@ async function toggleRecording() {
                 let interimTranscript = '';
                 for (let i = event.resultIndex; i < event.results.length; ++i) {
                     if (event.results[i].isFinal) {
-                        // We'll let Whisper handle the final, but show interim for "live" feel
+                        // Final text will be set by Whisper for higher accuracy
                     } else {
                         interimTranscript += event.results[i][0].transcript;
                     }
@@ -150,12 +174,14 @@ async function toggleRecording() {
         mediaRecorder.start();
         isRecording = true;
         recordBtn.innerText = '⏹';
-        recordBtn.style.background = '#333';
+        recordBtn.classList.add('listening');
+        document.getElementById('listening-indicator').style.display = 'block';
     } else {
         mediaRecorder.stop();
         isRecording = false;
         recordBtn.innerText = '🎤';
-        recordBtn.style.background = '#ff4b4b';
+        recordBtn.classList.remove('listening');
+        document.getElementById('listening-indicator').style.display = 'none';
     }
 }
 

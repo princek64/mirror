@@ -10,12 +10,20 @@
     <div class="bg-blob blob-1"></div>
     <div class="bg-blob blob-2"></div>
 
-    <div id="app">
+    <div id="loader">
+        <div class="loader-content">
+            <h2 id="loader-text">Mirror, mirror on the wall...</h2>
+            <p id="loader-subtext">reveal the truth beneath it all.</p>
+        </div>
+    </div>
+
+    <div id="app" style="display: none;">
         <div class="container">
             <h1>Mirror</h1>
             <p class="subtitle">Uncover your relationship patterns.</p>
             
             <div id="chat-container" class="chat-box">
+                <div id="listening-indicator" class="listening-status" style="display: none;">The mirror is listening...</div>
                 <div class="message" id="question-text">Initializing mirror...</div>
                 <div class="tag-container" id="tag-container"></div>
             </div>
