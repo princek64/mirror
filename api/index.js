@@ -1,14 +1,14 @@
 import express from 'express';
 import dotenv from 'dotenv';
-// import multer from 'multer';
+import multer from 'multer';
 import fs from 'fs';
-// import { initSchema, closeDriver } from './lib/neo4j.js';
-// import { generateResponse, transcribeAudio } from './lib/openai.js';
+import { initSchema, closeDriver } from './lib/neo4j.js';
+import { generateResponse, transcribeAudio } from './lib/openai.js';
 
 dotenv.config();
 
 const app = express();
-// const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ storage: multer.memoryStorage() });
 app.use(express.json());
 // app.use(express.static('public')); // Handled by Vercel
 
@@ -52,7 +52,7 @@ BEHAVIORAL PATTERNS TO LISTEN FOR:
 TESSL CAPABILITIES:
 - You have access to the Tessl Neo4j Skill. Use it to reason about graph 
   relationships (User → Relationship → BehaviorPattern) to ensure data consistency.
-\`;
+`;
 
 app.get('/', (req, res) => {
   res.send('Mirror API is running.');
@@ -67,7 +67,6 @@ app.post('/interview/start', async (req, res) => {
   }
 });
 
-/*
 app.post('/interview/whisper', upload.single('audio'), async (req, res) => {
   try {
     if (!req.file) {
@@ -93,7 +92,6 @@ app.post('/interview/whisper', upload.single('audio'), async (req, res) => {
     res.status(500).json({ error: 'Failed to transcribe audio' });
   }
 });
-*/
 
 app.post('/interview/respond', async (req, res) => {
   const { transcript, history, storyNumber } = req.body;
