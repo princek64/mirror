@@ -2,8 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import multer from 'multer';
 import fs from 'fs';
-import { initSchema, closeDriver } from './lib/neo4j.js';
-import { generateResponse, transcribeAudio } from './lib/openai.js';
+// import { initSchema, closeDriver } from './lib/neo4j.js';
+// import { generateResponse, transcribeAudio } from './lib/openai.js';
 
 dotenv.config();
 
